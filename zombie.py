@@ -192,13 +192,18 @@ class Zombie:
         wander = Sequence('배회', a3, a2)
 
         c1 = Condition('소년이 근처에 있는가?', self.if_boy_nearby,7)
-        c2 = Condition('좀비가 소년의 공 개수 이상을 갖고 있는가?', lambda: self.ball_count >= common.boy.ball_count)
+        c2 = Condition('좀비가 소년의 공 개수 이상을 갖고 있는가?',
+            lambda: BehaviorTree.SUCCESS if self.ball_count >= common.boy.ball_count else BehaviorTree.FAIL)
         a4 = Action('소년 추적', self.move_to_boy)
         chase = Sequence('소년이 근처에 있고, 좀비가 소년의 공 개수 이상을 갖고 있다면 추적', c1, c2, a4)
 
 
+
+
+
         c3= Condition('소년이 근처에 있는가?', self.if_boy_nearby,7)
-        c4 = Condition('좀비가 소년보다 공 개수가 적은가?', lambda: self.ball_count < common.boy.ball_count)
+        c4 = Condition('좀비가 소년보다 공 개수가 적은가?',
+            lambda: BehaviorTree.SUCCESS if self.ball_count < common.boy.ball_count else BehaviorTree.FAIL)
         a5 = Action('소년으로부터 도망가기', self.run_away_from_boy)
         runaway = Sequence('소년으로부터 도망', c3, c4, a5)
 
